@@ -2,6 +2,8 @@ package com.javiergomezve.foodtruck.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -10,7 +12,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.javiergomezve.foodtruck.R;
+import com.javiergomezve.foodtruck.adapter.FoodTruckAdapter;
 import com.javiergomezve.foodtruck.model.FoodTruck;
+import com.javiergomezve.foodtruck.view.ItemDecorator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +60,15 @@ public class FoodTruckListActivity extends AppCompatActivity {
                             }
 
                             Log.i(TAG, foodTruckList.get(0).getName());
+
+                            RecyclerView recyclerView = findViewById(R.id.recycler_foodtruck);
+                            recyclerView.setHasFixedSize(true);
+                            FoodTruckAdapter adapter = new FoodTruckAdapter(foodTruckList);
+                            recyclerView.setAdapter(adapter);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
+                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            recyclerView.setLayoutManager(layoutManager);
+                            recyclerView.addItemDecoration(new ItemDecorator(0,0,0, 10));
                         } catch (JSONException e){
                             Log.v("API", "EXC " + e.getLocalizedMessage());
                         }
