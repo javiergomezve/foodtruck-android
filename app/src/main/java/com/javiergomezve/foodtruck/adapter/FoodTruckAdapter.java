@@ -24,6 +24,13 @@ public class FoodTruckAdapter extends RecyclerView.Adapter<FoodTruckHolder>{
     public void onBindViewHolder(FoodTruckHolder holder, int position) {
         final FoodTruck truck = trucks.get(position);
         holder.updateUI(truck);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FoodTruckListActivity.getFoodTruckListActivity().loadFoodTruckDetailActivity(truck);
+            }
+        });
     }
 
     @Override

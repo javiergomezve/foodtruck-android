@@ -47,7 +47,7 @@ public class DataService {
                                 String name = foodTruck.getString("name");
                                 String id = foodTruck.getString("_id");
                                 String foodType = foodTruck.getString("foodType");
-                                Double avgCost = foodTruck.getDouble("avgcost");
+                                Double avgCost = foodTruck.getDouble("avgCost");
 
                                 JSONObject geometry = foodTruck.getJSONObject("geometry");
                                 JSONObject coordinates = geometry.getJSONObject("coordinates");
@@ -60,6 +60,7 @@ public class DataService {
                             }
 
                             Log.i(TAG, "getAllFoodTrucks: success");
+                            listener.success(true);
                         } catch (JSONException e){
                             Log.e(TAG, "getAllFoodTrucks: error " + e.getLocalizedMessage());
                         }

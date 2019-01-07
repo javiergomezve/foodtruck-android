@@ -1,5 +1,6 @@
 package com.javiergomezve.foodtruck.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +18,23 @@ import java.util.ArrayList;
 public class FoodTruckListActivity extends AppCompatActivity {
 
     private ArrayList<FoodTruck> trucks = new ArrayList<>();
+    public static final String EXTRA_ITEM_TRUCK = "TRUCK";
+    private static FoodTruckListActivity foodTruckListActivity;
+
+    public static FoodTruckListActivity getFoodTruckListActivity() {
+        return foodTruckListActivity;
+    }
+
+    public static void setFoodTruckListActivity(FoodTruckListActivity foodTruckListActivity) {
+        FoodTruckListActivity.foodTruckListActivity = foodTruckListActivity;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_truck_list);
+
+        foodTruckListActivity.setFoodTruckListActivity(this);
 
         TrucksDownloaded listener = new TrucksDownloaded() {
             @Override
@@ -44,6 +57,12 @@ public class FoodTruckListActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new ItemDecorator(0,0,0, 10));
+    }
+
+    public void loadFoodTruckDetailActivity(FoodTruck truck) {
+        Intent i = new Intent(FoodTruckListActivity.this, FoodTruckDetailActivity.class);
+        i.putExtra(FoodTruckListActivity.EXTRA_ITEM_TRUCK, truck);
+        startActivity(i);
     }
 
     public interface TrucksDownloaded {

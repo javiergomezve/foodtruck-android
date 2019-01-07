@@ -1,6 +1,9 @@
 package com.javiergomezve.foodtruck.model;
 
-public class FoodTruck {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FoodTruck implements Parcelable {
     private String id = "";
     private String name = "";
     private String foodType = "";
@@ -40,4 +43,38 @@ public class FoodTruck {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    private FoodTruck(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        foodType = in.readString();
+        avgCost = in.readDouble();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(foodType);
+        dest.writeDouble(avgCost);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+    }
+
+    public static final Parcelable.Creator<FoodTruck> CREATOR = new Parcelable.Creator<FoodTruck>() {
+        public FoodTruck createFromParcel(Parcel in) {
+            return new FoodTruck(in);
+        }
+
+        public FoodTruck[] newArray(int size) {
+            return new FoodTruck[size];
+        }
+    };
 }
