@@ -1,7 +1,9 @@
 package com.javiergomezve.foodtruck.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -37,6 +39,14 @@ public class FoodTruckDetailActivity extends FragmentActivity implements OnMapRe
         truckAvgCost.setText("$" + Double.toString(truck.getAvgCost()));
 
         reviewsButton = findViewById(R.id.dt_reviews);
+        reviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(FoodTruckDetailActivity.this, ReviewListActivity.class);
+                i.putExtra(FoodTruckListActivity.EXTRA_ITEM_TRUCK, truck);
+                startActivity(i);
+            }
+        });
         addReviewButton = findViewById(R.id.dt_add_review);
 
         // Obtain the SupportMapFragment and get notified when; the map is ready to be used.

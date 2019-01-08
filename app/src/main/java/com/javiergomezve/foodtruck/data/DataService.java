@@ -9,7 +9,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.javiergomezve.foodtruck.activities.FoodTruckListActivity;
+import com.javiergomezve.foodtruck.activities.ReviewListActivity;
 import com.javiergomezve.foodtruck.model.FoodTruck;
+import com.javiergomezve.foodtruck.model.FoodTruckReview;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,5 +79,49 @@ public class DataService {
         Volley.newRequestQueue(context).add(getTrucks);
 
         return foodTruckList;
+    }
+
+    public ArrayList<FoodTruckReview> getAllTruckReviews(
+            Context context, String truckId,
+            final ReviewListActivity.ReviewsDownloaded listener
+    ) {
+        String url = String.format(Constants.GET_ALL_FT_R, truckId) ;
+        final ArrayList<FoodTruckReview> reviewsList = new ArrayList<>();
+
+        final JsonArrayRequest getReviews = new JsonArrayRequest(
+                Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int x = 0; x < response.length(); x++) {
+                                JSONObject review = response.getJSONObject(x);
+                                String id = review.getString("_id");
+                                String title = review.getString("title");
+                                String text = review.getString("text");
+
+                                FoodTruckReview r = new FoodTruckReview(id, title, text);
+                                reviewsList.add(r);
+                            }
+
+                            Log.i(TAG, "getAllTruckReviews: success");
+                            listener.success(true);
+                        } catch (JSONException e){
+                            Log.e(TAG, "getAllTruckReviews: error " + e.getLocalizedMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "getAllTruckReviews: error  " + error.getLocalizedMessage());
+                    }
+                }
+        );
+
+        Volley.newRequestQueue(context).add(getReviews);
+
+        return reviewsList;
     }
 }
